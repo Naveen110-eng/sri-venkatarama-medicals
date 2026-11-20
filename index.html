@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sri Venkatarama Medicals & Fancy | Nellore</title>
+<meta name="description" content="Sri Venkatarama Medicals & Fancy, Balaji Nagar, Nellore. Company medicines, generic medicines, fancy and surgical items.">
+<style>
+:root{--g:#087f68;--d:#123b35;--bg:#f5faf7}*{box-sizing:border-box}body{margin:0;font:16px Arial,sans-serif;background:var(--bg);color:#20312d}
+header{background:var(--g);color:white;padding:20px 6%;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+h1{font-size:clamp(24px,4vw,38px);margin:0}header p{margin:5px 0 0}nav a{color:white;margin-left:14px;text-decoration:none;font-weight:bold}
+.hero{padding:42px 6%;background:linear-gradient(120deg,#e1f5ec,#fff7e7)}.wrap{max-width:1100px;margin:auto}.hero h2{font-size:32px;color:var(--d);margin:0 0 8px}.btn{display:inline-block;background:var(--g);color:white;padding:11px 16px;border-radius:24px;text-decoration:none;border:0;font-weight:bold;cursor:pointer}
+section{padding:34px 6%}.heading{color:var(--d)}.filters{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.filters input,.filters select{padding:11px;border:1px solid #cbdcd4;border-radius:10px;font-size:15px}
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.product{background:white;border:1px solid #e1ece6;border-radius:16px;overflow:hidden}.product img{width:100%;height:170px;object-fit:cover;background:#edf4f0}.pbody{padding:14px}.pbody h3{margin:0 0 6px;color:var(--d)}.price{font-weight:bold;color:var(--g);font-size:18px}.muted{color:#64766f;font-size:14px}.empty{padding:28px;background:white;border-radius:14px;color:#64766f}
+footer{background:var(--d);color:white;padding:22px 6%;text-align:center}a{color:var(--g)}
+@media(max-width:600px){nav a{margin:0 8px 0 0}.hero h2{font-size:26px}}
+</style>
+</head>
+<body>
+<header><div><h1>Sri Venkatarama Medicals & Fancy</h1><p>Balaji Nagar · Nellore, Andhra Pradesh</p></div><nav><a href="#products">Products</a><a href="#contact">Contact</a><a href="admin.html">Admin</a></nav></header>
+<div class="hero"><div class="wrap"><h2>Medical, surgical & fancy essentials</h2><p>Explore products available at our local store. Contact us to confirm stock and current price.</p><a class="btn" href="https://wa.me/919502363658">WhatsApp: 9502363658</a></div></div>
+<section id="products"><div class="wrap"><h2 class="heading">Our Products</h2><div class="filters"><input id="search" placeholder="Search products..." aria-label="Search products"><select id="category"><option value="">All categories</option><option>Company Medicines</option><option>Generic Medicines</option><option>Fancy Items</option><option>Surgical Items</option></select></div><div id="productsList" class="products"><div class="empty">Products will appear here once the store admin publishes them.</div></div></div></section>
+<section id="contact"><div class="wrap"><h2 class="heading">Contact & Visit</h2><p>Balaji Nagar, Nellore, Andhra Pradesh</p><p>Phone: <a href="tel:+919502363658">9502363658</a></p><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Sri+Venkatarama+Medicals+Balaji+Nagar+Nellore" target="_blank" rel="noopener">Google Maps</a></div></section>
+<footer>© Sri Venkatarama Medicals & Fancy · Balaji Nagar, Nellore</footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { firebaseConfig } from "./firebase-config.js";
+const app=initializeApp(firebaseConfig), db=getFirestore(app);
+let all=[];
+const list=document.getElementById('productsList');
+function render(){
+ const term=document.getElementById('search').value.trim().toLowerCase();
+ const cat=document.getElementById('category').value;
+ const rows=all.filter(p=>(!cat||p.category===cat)&&(!term||(`${p.name} ${p.description||''}`).toLowerCase().includes(term)));
+ list.innerHTML='';
+ if(!rows.length){list.innerHTML='<div class="empty">No products found. Please contact the shop for availability.</div>';return;}
+ for(const p of rows){
+  const card=document.createElement('article');card.className='product';
+  const img=document.createElement('img');img.src=p.imageUrl||'https://placehold.co/600x400?text=Product';img.alt=p.name||'Product';
+  const body=document.createElement('div');body.className='pbody';
+  const title=document.createElement('h3');title.textContent=p.name||'Product';
+  const price=document.createElement('div');price.className='price';price.textContent=p.price?`₹${p.price}`:'Price on request';
+  const desc=document.createElement('p');desc.className='muted';desc.textContent=p.description||p.category||'';
+  const order=document.createElement('a');order.className='btn';order.textContent='Enquire on WhatsApp';order.href='https://wa.me/919502363658?text='+encodeURIComponent('Hello, I am enquiring about '+(p.name||'a product')+'. Please confirm availability and price.');
+  order.target='_blank';order.rel='noopener';
+  body.append(title,price,desc,order);card.append(img,body);list.append(card);
+ }
+}
+document.getElementById('search').addEventListener('input',render);
+document.getElementById('category').addEventListener('change',render);
+onSnapshot(query(collection(db,'products'),orderBy('createdAt','desc')),snap=>{all=snap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.active!==false);render();},err=>{list.innerHTML='<div class="empty">Product catalogue is being set up. Please contact the shop.</div>';console.error(err)});
+</script>
+</body></html>

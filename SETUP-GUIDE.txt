@@ -1,0 +1,40 @@
+SRI VENKATARAMA MEDICALS & FANCY — WEBSITE + ADMIN PANEL
+
+IMPORTANT
+This is a ready-to-configure website package, not yet a live/deployed website.
+The supplied Gmail is configured as the only authorised admin email in the starter code.
+No password or OTP is needed in this package. Google Sign-In will authenticate the account.
+
+FILES
+- index.html: public product catalogue
+- admin.html: mobile-friendly admin panel
+- firebase-config.js: paste Firebase project web config here
+- firebase-rules.txt: Firestore and Storage security rules
+
+ONE-TIME FREE SETUP
+1. Go to https://console.firebase.google.com/ and sign in with the admin Google account.
+2. Create a Firebase project, e.g. sri-venkatarama-medicals.
+3. Add a Web App in Project Overview and copy its Firebase config into firebase-config.js.
+4. Authentication -> Sign-in method -> enable Google.
+5. Authentication -> Settings -> Authorized domains: add your published website domain.
+6. Create Firestore Database (production mode). In Rules, paste the Firestore rules from firebase-rules.txt and Publish.
+7. Build -> Storage -> Get started. In Rules, paste the Storage rules from firebase-rules.txt and Publish.
+8. Publish all files on a static host that supports HTTPS (e.g. GitHub Pages). Keep all four files together in the same folder.
+9. Open your published domain + /admin.html and sign in with the authorised Google account.
+10. Add products in the admin page. They will appear on the public homepage automatically.
+
+SECURITY
+- Do not share Firebase project owner access, passwords, or OTPs.
+- Admin page hides itself from other Google accounts, and database/storage rules also restrict writes to the specified email.
+- Public visitors can read published product records and product images.
+- Do not put private keys or service-account JSON in website files.
+
+STORE DETAILS IN THIS STARTER
+Business: Sri Venkatarama Medicals & Fancy
+Address: Balaji Nagar, Nellore, Andhra Pradesh (confirm exact address before publishing)
+Phone/WhatsApp: 9502363658
+Admin Google account: naveenthaliva17@gmail.com
+Categories: Company Medicines, Generic Medicines, Fancy Items, Surgical Items
+
+MEDICAL PRODUCT NOTE
+Only list products that the shop is legally permitted to sell. Prescription medicines must be dispensed only against valid prescriptions and in compliance with applicable pharmacy rules. Product availability and price should be confirmed with the shop.

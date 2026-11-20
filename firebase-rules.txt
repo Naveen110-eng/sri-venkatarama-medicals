@@ -1,0 +1,31 @@
+// Firestore Rules (Firebase Console -> Firestore Database -> Rules)
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "naveenthaliva17@gmail.com";
+    }
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+  }
+}
+
+// Storage Rules (Firebase Console -> Storage -> Rules)
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "naveenthaliva17@gmail.com";
+    }
+    match /products/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}
