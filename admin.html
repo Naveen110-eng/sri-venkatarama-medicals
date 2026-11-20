@@ -12,7 +12,7 @@
 <label>Product name *</label><input id="name" required maxlength="90" placeholder="e.g. Cotton Bandage">
 <div class="row"><div><label>Category *</label><select id="cat" required><option>Company Medicines</option><option>Generic Medicines</option><option>Fancy Items</option><option>Surgical Items</option></select></div><div><label>Price (₹)</label><input id="price" type="number" min="0" step="0.01" placeholder="e.g. 120"></div></div>
 <label>Description</label><textarea id="desc" maxlength="400" placeholder="Short product details"></textarea>
-<label>Product photo</label><input id="photo" type="file" accept="image/*">
+<label>Product photo URL (HTTPS)</label><input id="photoUrl" type="url" placeholder="Paste image link here (optional)"><p class="muted">Upload the photo to a free image-hosting site, then paste its direct image link here.</p>
 <button class="btn" type="submit" id="save">Publish Product</button><button class="btn" type="button" id="cancelEdit" style="background:#60756c;display:none">Cancel edit</button>
 <div id="formStatus" class="status"></div></form></div>
 <div class="panel"><h2>Published Products</h2><div id="items" class="muted">Loading products…</div></div>
@@ -22,9 +22,8 @@
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {getFirestore,collection,addDoc,updateDoc,deleteDoc,doc,onSnapshot,query,orderBy,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import {getStorage,ref,uploadBytes,getDownloadURL,deleteObject} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import {firebaseConfig,adminEmail} from "./firebase-config.js";
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),storage=getStorage(app);
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 const $=id=>document.getElementById(id);
 let editing=null,products=[],stop=null;
 $('login').onclick=async()=>{try{await signInWithPopup(auth,new GoogleAuthProvider())}catch(e){$('loginStatus').textContent=e.message}};
@@ -47,22 +46,21 @@ function renderItems(){
  const del=document.createElement('button');del.className='btn danger';del.textContent='Delete';del.onclick=()=>remove(p);
  actions.append(edit,del);d.append(info,actions);box.append(d)});
 }
-function fillEdit(p){editing=p;$('name').value=p.name||'';$('cat').value=p.category||'Company Medicines';$('price').value=p.price||'';$('desc').value=p.description||'';$('save').textContent='Save Changes';$('cancelEdit').style.display='inline-block';window.scrollTo({top:0,behavior:'smooth'})}
+function fillEdit(p){editing=p;$('name').value=p.name||'';$('cat').value=p.category||'Company Medicines';$('price').value=p.price||'';$('desc').value=p.description||'';$('photoUrl').value=p.imageUrl||'';$('save').textContent='Save Changes';$('cancelEdit').style.display='inline-block';window.scrollTo({top:0,behavior:'smooth'})}
 $('cancelEdit').onclick=resetForm;
-function resetForm(){editing=null;$('productForm').reset();$('save').textContent='Publish Product';$('cancelEdit').style.display='none';$('formStatus').textContent=''}
+function resetForm(){editing=null;$('productForm').reset();$('photoUrl').value='';$('save').textContent='Publish Product';$('cancelEdit').style.display='none';$('formStatus').textContent=''}
 $('productForm').onsubmit=async e=>{
  e.preventDefault();const user=auth.currentUser;if(!user||user.email.toLowerCase()!==adminEmail.toLowerCase())return;
  $('save').disabled=true;$('formStatus').textContent='Saving…';
  try{
-  let imageUrl=editing?.imageUrl||'',imagePath=editing?.imagePath||'';
-  const file=$('photo').files[0];
-  if(file){if(!file.type.startsWith('image/')||file.size>5*1024*1024)throw new Error('Please choose an image smaller than 5 MB.');const path='products/'+Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_');const r=ref(storage,path);await uploadBytes(r,file);imageUrl=await getDownloadURL(r);imagePath=path}
-  const data={name:$('name').value.trim(),category:$('cat').value,price:$('price').value?Number($('price').value):null,description:$('desc').value.trim(),imageUrl,imagePath,active:true,updatedAt:serverTimestamp()};
+  const imageUrl=$('photoUrl').value.trim();
+  if(imageUrl && !/^https:\/\//i.test(imageUrl))throw new Error('Please use a secure HTTPS image link.');
+  const data={name:$('name').value.trim(),category:$('cat').value,price:$('price').value?Number($('price').value):null,description:$('desc').value.trim(),imageUrl,active:true,updatedAt:serverTimestamp()};
   if(editing)await updateDoc(doc(db,'products',editing.id),data);else await addDoc(collection(db,'products'),{...data,createdAt:serverTimestamp()});
   resetForm();$('formStatus').textContent='Product saved and published.';
  }catch(err){$('formStatus').textContent='Error: '+err.message}
  finally{$('save').disabled=false}
 };
-async function remove(p){if(!confirm('Delete '+p.name+'?'))return;try{await deleteDoc(doc(db,'products',p.id));if(p.imagePath)await deleteObject(ref(storage,p.imagePath)).catch(()=>{});}catch(e){alert(e.message)}}
+async function remove(p){if(!confirm('Delete '+p.name+'?'))return;try{await deleteDoc(doc(db,'products',p.id));}catch(e){alert(e.message)}}
 $('logout').onclick=()=>signOut(auth);
 </script></body></html>
