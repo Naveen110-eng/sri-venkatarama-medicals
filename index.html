@@ -1,53 +1,69 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sri Venkatarama Medicals & Fancy | Nellore</title>
-<meta name="description" content="Sri Venkatarama Medicals & Fancy, Balaji Nagar, Nellore. Company medicines, generic medicines, fancy and surgical items.">
-<style>
-:root{--g:#087f68;--d:#123b35;--bg:#f5faf7}*{box-sizing:border-box}body{margin:0;font:16px Arial,sans-serif;background:var(--bg);color:#20312d}
-header{background:var(--g);color:white;padding:20px 6%;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-h1{font-size:clamp(24px,4vw,38px);margin:0}header p{margin:5px 0 0}nav a{color:white;margin-left:14px;text-decoration:none;font-weight:bold}
-.hero{padding:42px 6%;background:linear-gradient(120deg,#e1f5ec,#fff7e7)}.wrap{max-width:1100px;margin:auto}.hero h2{font-size:32px;color:var(--d);margin:0 0 8px}.btn{display:inline-block;background:var(--g);color:white;padding:11px 16px;border-radius:24px;text-decoration:none;border:0;font-weight:bold;cursor:pointer}
-section{padding:34px 6%}.heading{color:var(--d)}.filters{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.filters input,.filters select{padding:11px;border:1px solid #cbdcd4;border-radius:10px;font-size:15px}
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.product{background:white;border:1px solid #e1ece6;border-radius:16px;overflow:hidden}.product img{width:100%;height:170px;object-fit:cover;background:#edf4f0}.pbody{padding:14px}.pbody h3{margin:0 0 6px;color:var(--d)}.price{font-weight:bold;color:var(--g);font-size:18px}.muted{color:#64766f;font-size:14px}.empty{padding:28px;background:white;border-radius:14px;color:#64766f}
-footer{background:var(--d);color:white;padding:22px 6%;text-align:center}a{color:var(--g)}
-@media(max-width:600px){nav a{margin:0 8px 0 0}.hero h2{font-size:26px}}
-</style>
-</head>
-<body>
-<header><div><h1>Sri Venkatarama Medicals & Fancy</h1><p>Balaji Nagar · Nellore, Andhra Pradesh</p></div><nav><a href="#products">Products</a><a href="#contact">Contact</a><a href="admin.html">Admin</a></nav></header>
-<div class="hero"><div class="wrap"><h2>Medical, surgical & fancy essentials</h2><p>Explore products available at our local store. Contact us to confirm stock and current price.</p><a class="btn" href="https://wa.me/919502363658">WhatsApp: 9502363658</a></div></div>
-<section id="products"><div class="wrap"><h2 class="heading">Our Products</h2><div class="filters"><input id="search" placeholder="Search products..." aria-label="Search products"><select id="category"><option value="">All categories</option><option>Company Medicines</option><option>Generic Medicines</option><option>Fancy Items</option><option>Surgical Items</option></select></div><div id="productsList" class="products"><div class="empty">Products will appear here once the store admin publishes them.</div></div></div></section>
-<section id="contact"><div class="wrap"><h2 class="heading">Contact & Visit</h2><p>Balaji Nagar, Nellore, Andhra Pradesh</p><p>Phone: <a href="tel:+919502363658">9502363658</a></p><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Sri+Venkatarama+Medicals+Balaji+Nagar+Nellore" target="_blank" rel="noopener">Google Maps</a></div></section>
-<footer>© Sri Venkatarama Medicals & Fancy · Balaji Nagar, Nellore</footer>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import { firebaseConfig } from "./firebase-config.js";
-const app=initializeApp(firebaseConfig), db=getFirestore(app);
-let all=[];
-const list=document.getElementById('productsList');
-function render(){
- const term=document.getElementById('search').value.trim().toLowerCase();
- const cat=document.getElementById('category').value;
- const rows=all.filter(p=>(!cat||p.category===cat)&&(!term||(`${p.name} ${p.description||''}`).toLowerCase().includes(term)));
- list.innerHTML='';
- if(!rows.length){list.innerHTML='<div class="empty">No products found. Please contact the shop for availability.</div>';return;}
- for(const p of rows){
-  const card=document.createElement('article');card.className='product';
-  const img=document.createElement('img');img.src=p.imageUrl||'https://placehold.co/600x400?text=Product';img.alt=p.name||'Product';
-  const body=document.createElement('div');body.className='pbody';
-  const title=document.createElement('h3');title.textContent=p.name||'Product';
-  const price=document.createElement('div');price.className='price';price.textContent=p.price?`₹${p.price}`:'Price on request';
-  const desc=document.createElement('p');desc.className='muted';desc.textContent=p.description||p.category||'';
-  const order=document.createElement('a');order.className='btn';order.textContent='Enquire on WhatsApp';order.href='https://wa.me/919502363658?text='+encodeURIComponent('Hello, I am enquiring about '+(p.name||'a product')+'. Please confirm availability and price.');
-  order.target='_blank';order.rel='noopener';
-  body.append(title,price,desc,order);card.append(img,body);list.append(card);
- }
-}
-document.getElementById('search').addEventListener('input',render);
-document.getElementById('category').addEventListener('change',render);
-onSnapshot(query(collection(db,'products'),orderBy('createdAt','desc')),snap=>{all=snap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.active!==false);render();},err=>{list.innerHTML='<div class="empty">Product catalogue is being set up. Please contact the shop.</div>';console.error(err)});
-</script>
-</body></html>
+PK   }u]            !   index-professional-updated-3.htmlux         UT
+  %nkÜnk"nkÍ\[oãÈr~÷¯àjv7Ò±.Ôýâ‘'²-=ãûmÆsö C‘M‘cŠ¤IÊ²F# ÈCç Aà< È/òzòOö—¤ª»I6)ZöìÙ ÙÆ"Ù]¬ª®úêÒ-½þAsÔ`îÉ&ÖöÆkü#YŠ=îçˆÃDÑàÏ„Š¤Šç“ Ÿ›z©“oÛÊ„ôs&™¹Žä$Õ±bÃ°™©F_#¦JJô¢hÚf`*VÉW‹ô«H#0‹l_z¦tCì;%P<e¢HÇD3aŒ/ý,í+¶:—¾I'Ä²¼®°‰·kÄW=Ó
+LÇxŽhQÚQ,å‹)(cÅ+†o(³¦Mü¢äO½1N’ˆïQ§+¶&é”+3 ¿œRE`	)©Ð˜y%·›¤ÙÀ±~0Gzžã‹Riìb÷^É¶Þêl•J!.\¶ëz/'¦ô^‘ŽÞÒe¸4í»Þ«j§^¯|8
+ˆÖ{Õj´;í:\[À5®•àÜ±cÁS½1ÒšM¸œÀ0\ë:\ø†¢9³ž,Ukî£TÇ¼ñHÉ·‹­z±Ù*–åna¹ñ‡ÅÈy,ùæWÓ÷FŽ§¯w–h)PºcY¥1” Óñzþ$2–#G›/&
+(ÎîÉ[#E½{ÎÔFNÚº¢w¶¨nzŠ—§ò¶tÐR¯Út+ÕrSx æâ±H º/úŠí—|â™úrCY°É¦mÀ`YF+ µ· &Öuå«ÕŽì>»µŸ
+[œe8Ërà¸#Å[<1.PçÎ×+Ò
+µ¶ò”ËÛ=–x[®¢i¨‡è
+µFùFå^µî>.7Ð]H‚<U¶ëø&ÚfÏ yîæ[À(æ+È®‘Ç^
+t„:×£ŽÔ[árÈEü¿,·`1ÊH¡™¾k)óžn‘Ç-Ê_‰ÚaÈå—)¼FŸ—¸éõ|W ‘`v¶5VÜ^ˆ„AµK2y`ØÏR§óQvª¨Ž§PÙlÇ&[ }æê=¤h9c‡/K_islì3·%OÑÌ©O™-íXñÀ5à1¼7_m452.¾’GÝV»[Dgj4:…­Û±gj[ð	MpËW!^«Z#\ºc¨+§– .÷Êz=Ôä žc#5,G½h«–2qó8·X{˜k ©ÂJSâÂWËµ„ýSË‹©OËZˆÏ©‡DK«¡¥ÙÊÃË–ª‹²Â€ÒÌƒKü‡N–”EæŠjiƒZ„÷¢Ö¸>ë­f­¡rB=Ãy £™¦†R©Š”FÓ pìbÙõLðÆy±ìÃKm
+>.˜ J$Í¡&h•¯Æ
+sêÔóá®cRy3
+•dÚt^ê4‚
+;¨ïLIVq„	ÎÕDá69uAï•¨Kl9À­=gŠ[§þ(ÕRšÈy„jzªE$%:ÍŸ¤jó§â+­¥WIS’‹Ø¼ÂƒqR]þ©P\q§šLÝ	®­ËEôé8+%ô¦EÂµðŸèî4¶M'¶¶¬{R¹£3EQ¿ZÕ-P%s2òœY†¤;±ÄXb‹@‚*ŒÚB¹BRw¼IoêºÄSŸpþ%£ºH{dB<²)¯z¤ÜYuÉ0pTeºÔú'Ê#G7°>jôu.—ëU³Þµ¢H­Ä¬–0«¤¨h¤~Ò‹©ËÊ+.Ë™)aà¨Qÿ}(mVEá^†~ä;–©I¯4•(¤±âDn®*+å‘µç ºÎšâ%üm5:u=á	‘CSZ	±©´šéª“³¯g™ ØLVvQˆ£­GÀZÍ ²…ø¤[0Ð05Ø‚Ø=E(v±7ä~ýó¿çbÊÔø+®(f[³Oª%pëI¯DcZmà¿j+aÌ#HÅ„‡qDˆJI[©µðEI;­63„Óˆj‚º«Ø‹dvr§uô&é>CÈõœ‰SM7¦ó„5?:`ÅôV­JQHC|K„xŒµHëwHntY„hŽ€Š)ôªÚ®ku¹*‡H£Åª·$ÝwÉG²Èœû«q:"\”qZ=u­.B§ÓìÈ£”JºÝ® “v"É 1…˜YÅgŽÇ”ÍñÊü~i}Ilí%znR{¥¸Ä½ Ú	¡)z‹dÔâR`®’®ò™”{IÎÖ7MœJ]^±<â%È·ŠUÝ+D¹lDE5ÀÞ…Uc¸õ=VMÃD¥í–`ÓO%©O+ë™j˜ƒU›ÍÆ( Ëµ´õ£ò­ÐúåNBÜžøÁÒò5»F²j»5êV—Ùãêñ¸–ÚuÚ@P7-`ã»¢óz™ú}LA2mw£KŸX`Q#wñ• Ö$5MÍJ%Ó8EëM^B
+5Kµ‹Ì:Ó€ÂnfB›àrr…x©MÕÀÿláÅ€÷Pá¡1rkl‡èŠäþ*|m£(ÉÀ·!zAP¦i‹åšóÊ«€8+£ŸPðÛ|©Ž9×S;¦!™“1¯«²üSX/VÛ5ÎèpRÒMHÎYÍŸ\VYoéõ„ç aÚ‹KÝ—È/+N—ŒzaUÛZ ‹–ÐTÉ"ÛwŸJ€»¢RôÇ0Eaî™‚°‹*ñ	Õ;¢I­¤ëÒ{Hî«zT‰Ihµ‘ETâEN*BEêÇ"£ögþƒöNÚ§„Ù,ü­z#Ã^©]ÒÑFiÓçê±u.98(!ˆ-¦ÖI¢ÇJ@Ðß ÈÆHSµFV4ÈX;ªn¦å^µRBK³€¤Ý½C:ëuRE‰D[n6«j¬bÚ<j®êxµ[•XN^ã¢_Ár¾¸þ„æJ1	¨yµß-=äB¤rÊN–S.7tÇ	Rý8ÞW
+[}ÌÈÄå†<c5 ‹õe†QŽSZ´‡TÕ†¦iõU(†TÛ—fÊ"Ê¿uó‘h¼¢¨
+%E5ez¯ª­Î¨ÙHTT™uI%³vFV™
+¨†ÍdY®ÇÊfØÍP¥`måÉ=/ÍŒÈÐo'Í’öÄÑ«„Ä5ÏqÓš2mŸ©¾²Ü­5«z§qÚ#œ§:yyÇGŒ+¼”—Ø‰'T·š:Æ=é&ÖsEkZåqtî4Œ8Lc—:]xË¢#¬dw´(CÒt©!;«	þú„þ©î¡÷¾žÏæq¤åøDèê‰x®é
+]ÎÀþÕ¶zª¯—QFSŽ7~'!yƒqºb`÷)^Ò„EtÅÁa|\ƒ¢S5uEo§t&6ïi'¯¨,ÔPà`•é$D€7
+;©­€¬…Ý¨üA:!3É7W25Ü	CqÛ&^Q:¿\e>Áv£«ØÄ¢;d®G&æt"q¤üC
+C˜]b“ÏviÖv›ª¼ÛÔB0—äŸÂÆ“ÔìÀçj]©¶‰ÄœMˆýI˜—êÌº®z#¹+)&î¥ZDYý¡Œ(Mÿ«¥í½	Y-ïïÐ&[¢ãÆb@ó'º?Tª6š+ì1Vx†Ü°‹0ˆ0
+M6ŸM\ÌÖzÔõùZ/<Nó7Ò}Ú—mRÐ>ŸørÇElµb	égš˜g9
+’©h„-8õÉ•i6Ÿ-Ëã¸To?·a$LEZ£‘ÒCVOÑ¼Øx˜±=SXíõ	ùM+Ñ]\&I»iL†J˜öø’›71G®iY‹5šÉÐd'™Åg¤˜,Ñø
+Íª2ÇŽÅŽÅšÌPë)z“n[d5·UJ‚t VKÇÑ—X&Û*Lv/Ï6ÏYü¥™%k.r‰îCg­UEo§ÏÕ³q¾ÜŒDËD¡¿RØ×– …„x!°§:îœ÷0„.HºqbfÛB«®šY'Óñ7«†fÐÔ¯ì«Š]²”‰;­â¾¨M×$*ƒä”‡ä;ú©Ù;NÝÕ§r3N÷×Û¦ÌCRM¯©t‡ºÓAjÅ¦ÌP”ˆÆÑ±ÔÀ­Àmg0öpNªå+%öZÖnå5X1t¬!Ë)³³)XÑ\r›»™œÍö$²è¯[[·0- /(S ¬u
+_t%£!ˆ,Ib¯utYë¦ËáôNãº}Fñ=nQ¼
+Ï§`3²KªÙ57¯³ª·Xg4õä(ÍŠô•ì¢ƒrC¬?GªÖQµ´>¿#SŽy¤Oüí„h¦’¶4é~ê"™eˆ`J)ød£ÙÍ¶e"(ñ5FGèuj"Š°àðDÑ¶R°'Ñg!´x!'\Šþòdg#:)“^’l12tÓ•™n¢æðÚ~p=Õ^
+;ÏLÄñË5‹C«Áu‹¯0+áé{ê[B?–j[Â1'õ·ÌÜ[¦‰êò…*©e¶È«Ú1I×)¤Z¾âè¨ù¹†éDlÍ¸ÄVÚ÷<Û;ý®9‹[ï¼Èº(³/´¤ZhI¯+üŒâë
+?ŠJ…?šù AòêûýœP—ä¶Å Ñ‰<I…ä1Í|‚U@nû×?ÿûë
+<¤#¶_ÕgŠÃÕí×îö­3õ¤À¸ `Îh #¸c8žà‚OúËeŸþ|]q·ù;£7§xC¤Êmï.†HåÃðèèdxy‰Ÿ‡7Ã‹Û½Á­t2î]&ÈÐÙZâ=¡/|ˆ D•è…¸n9ÉðˆÞÏ½Ea
+âéºÜö&¬Üdà_z¬àjâ_Ó}íí]ª^i*°‰£äsM™ç^a¾°¢ «€ÛÀ/ç0´ÅÜö%X ŽˆŸQYàÉý›|æè:ñàÙ)ý›|Æ<·}Ü\Ÿ&Ÿrw…å`O
+ð£ŒGUsÛüLŸVg°hÚ‹‰!>£•“L­ŸÃNh)ãŠ„æã(‹×»ôr[Ž´Ãˆ¡±õç+¿±ñz«ô%DÊÜ“FÁ¡6Çæ$†ñƒU9fïI;Ÿ°5göÎ¹ ç†+«Ò5Ÿ WQ|“xåÐy†.º£ðâsÐ’¸&ÍEÇƒ$/d@2í'Ž[£Ç­h#„êÜvì
+üÔ]nÕÚB†Ïøn!R…G¥Â™F¸~¯R™)å	©t«Ý¦\«·ê­f''ÃŒñûß,Å¾ËIu÷s¶ƒæ€ ¶k(fóþú—ÙxÂÃWAbÞ	P±{z<”®N¥ÛÓëéètwp$]^^#/fny@+0DeÏL¸Ö=¨54k*–xx¸¾,x3Ù/•*‹LTB‰Š(cWä}#Û…Ã@I#¥rœGÛ—t§®¡1D‡˜2õ¶Ãe…€3ðï¤)˜Xk ©SžUTª?Ó2ƒyQb À{‰ ¦_Žˆ¾QtÉ@ç¶}¢Ð'€Ì‚j“’òøMý7„¦Lñ“·Å°JnÔ¶Ïwj)ž‚Üüˆa EtYÑñ¤é>m>QÔÎIŠg*¬0îçè;èw
+R,Ç‡5ÀNÏŽLry}".ŽŸ·wQ–.†{{·s¹~à`gçôêjý˜ƒÃãÁÑàö™WÂ
+^O®’šqÃ‘´{À	Óƒ„…„dfKP©I‰>døí‹ bƒÏ€“„à°2€¿9vßç…øù*ƒ$
+%ŒSOÊÆ,åÒ%*8´†:j)1ñËéˆ'EÌ›N ÞFAq­Õ0§”h‡)Ëš&:ëX`{Ok%ºi¥°Su²Ò‰Ï(æóŠ3É¥	Ùløç'töxÖžð=$„¤¿ñÃÅ±BÉŸóù˜öŽ¢£ÓýýáÅ%÷ù
+Q?\#©mïÜ3ëµG¨xR`iO™‹¦Á£„D»Qï"Q"øÃqå¬Ù¶¨eœt¶
+Î¦Çá4¥`œp†8åB<ð¢G„<á †¦Ï‚éÞàðèVÚŽ²#Fä#	‰²µßŽ¥ãIgŒL¤—*0‡+p~>
+	†Š=‡¼ÄÅ¯VpšâºÏ(Zì& ]Cý˜~vï÷x*h²ç¤cRqíñÖHñI«Q4ovN/fòû·cg ÿ\^Ãë1|ºÁöo çx{°¹ßµø»Kdkx~sÑ°Ok£y­í÷æç•Ê¼òõÈ4Üw–|³¼{ß6.ß6¾öù¹¹k[Çïë•v»[¯Ëþ¡ÚmNn/wîŒãm`Ýÿz3;xÐÎnwgãÑpünh¾?×‚–ÿ±þàØê'28¾¿s|ýÑk}üàÍëòÕäô¡ýéîü½öåpàø•ýá‰Þ¸½ywýÎ|ûIï(çòÙíf­ÒPF²«»
+ž’{ò¸¿¹w·s>0í“†30&ÇóÆu»õ®þrßÙÍåÃ¡ó¥ÚôŽÛ$» Ó÷ãaU­Ü9îÃ>“©©=Þºw»û;]ËØ½Ý¹Ú»ßù¢ž“îðÄõß¿¿>Ú;6½¦öNë›¦­ÕO''u¹!»m¯ªí¶å/nÔ£kRy=îZ3sïSk§ýÖ—-ÝÛûÖ‡ýAõëÊwñîÝ×³ÖûÛ9´/nföÇ‹Ó†}²yÝ8>Ø9ÛõŒƒc25>Ö¯ÎOµîÝÎÛÁµñÉ¼ŸîÍŽ§g®s *­nÃ<˜ž½ïVü£a»»9kµÛ—ÝóëÝð7§û îíö.±®íùÐ?9:¼ÿ°U¯<˜ÁÎõùYûb¢|˜7.ê­ Ûn>œ½;©~hîÌÌS§êß=Ü|Ú»îNnjÍQ»y¡ ÚýÉUÍmœÞùf§9¿óGõýO_?^ì×å½É•E ŸÜÁko§wÚ¬3jíša}Øï>jÞ»`¯-_|8þxyØž¼Ûo˜cwÿxò`v[;Þû#Åû(ïÐì £m·kçµù®Óüb
+FŽÜ½ÑŽ›õÓ•ÑaEóöÏ«Ãk¥uöx~^=û4­U{õÛ“ëóùÝÍ…ýéæÞù¨*ÓÍOvp{uuo|¸˜¶õÍÍÇÍŠõ®ú`×'ªsïX·u[ ÝÖµ¯òæô¼5¹w•Û/ÓÉY»ý¾­kÚ;¿öÕz;Ð»÷-YÞ›^y—ûm{ïñ‹{ôA9w¿v4÷ìD¿w÷Ëèaf]«¿Îk_«5¯Þ­\vNŒ½úÃ­=}¬Ô/]Ë¼©i•1u´Ëë›Ó‹÷ÍÝÛÃÃ>$J~ñ“Â…ƒ›Òa0 pÈe#ö S…u¼nwp©ìÙà6DA£¾}>5ç–.	d®DJVëÊV
+¹PqÏ‹ŠÆrŸšé‡ˆV–xð ãZ˜B·Û1Ã¡“”	Ö˜XHQÊH‹íWcž£›Þ%år1L§LgTz,S¢o
+wíù|Ú†FÅá3<Ê¡`,Å²HŸ¦ƒ#¡ Bä¿–i«£9“gFF>”ƒo$û QÜøÅNFŽ¨šûí¡»BÈ‚Ç¾iÇ%ˆäNG–IÏìQŽ¹œk¬üè/¼Žþ¥LûQ©FN¢ÛÇ†cAîæGoÆÕs˜½Q~ýûÿH¦ó|´ >+xg! cÇCuh’Éª5…,Ò'ˆûü±I@Xö< 9ÀÄÅ }—yeÄ[¬hMuÍöÕëC,îWž]†
+Ôã
+ã>¡@qyL?È	yOÆšÓ#˜PÍ9ŠF-:ÖÜ“kƒÇ'sÛ¡$±ï§&ª…SºÕŠ†
+‹
+NFÉu-à3MpÑ(‰ƒz§jó`ýÌa¸0Ÿaìñ<Ä FÜˆâFK\¬²…Ž7ð,Ä½ÕÂ‚Ù²t%xŒ¤9À/z¼AÅ.œC·>C'ÅT8;Kf`QGì·»Ñ	I§€1—,“gŽôüú÷ÿü »9jÓ –Ë¥€Ä´>_ïEb=ƒG~¼3GqöÍÞú*Èev™ŠÒÀÖOtP4â±kqf86éa2-EÃ€X½ÍD_h;þÌZ>îÓ©¨½4›•ÇŽ3¶HYu&•‰âú•7Škö«?ßO‰7ïƒ˜›‚˜›¡˜›L’M*É&äÙÕ[H{áþ÷§6Öëú„Ðþ„å¾ÉÖê%ÓæÕÑ|¹%(/°*Yhâ`Q(öÉÊµÄ,îK‰2<ò›òË4ûý»¨†>ÉÍ:Ýº[©l*¼UË6 _âQñÎbæ}¨«3ï³F?îwH)£=ò¶Wìžf"´…x2<|{°ŸNO÷$º'q6¸¸:^$Û^nÜ÷šPéfnf{q}çvµ‘“Õhp4¹ÆxÜ@FžÞvq·“NZ”mÍT¸Iüq.fÛÑ/ýúÿ*ØÒMàlPæ•3UP~$^²¤ý=>bÔÝ¾2`
+º3í`šéb¨¥ë^^·–Ø
+ûÚùO¾?‚ñg‹7‰¤lDÅ»W¸Å'n `÷’Û +ø%bZ$£¡ûºÂ]TØ<NÛÿŽøA·½Xš<"ïíDw< Oøý}gÌ“?:	7%b:hm4gÓ¯V÷Fã“æ©b&: vV‹8à$n…àL¡šôÔžÜæÌãGº÷•HTwñ6@õ/Ñ×SýÙ‚?
+ÄbÛ ¢•Æ0•ŸdµA"“¥A0(™ÑHÃ¢ Ä*Ú¨6B¡i>šË0ÝøDt¼FWô2!©’(ø°LßÖ˜Nx1>Áƒ#
+‚QP·ˆÒ[áM:%ü&jES\¬
+s‚
+-i!ñK‚´½xÉ¶×’øç XˆQ ­ìP}ñ+U¹\m”«Ñ­¶Å¾ø¹­˜6Xú><¥Z/‚R-‹YQ¢¨YdÚÝÁö¥
+Øj8ñjŽúWñ¡‡¯LqØÅÅG¯(Ç3é²Ù4øØ 2õÊ'©ŠÚ¨/Š™‡…pöÙÁéÉ°ŸK ÀÖ†øUmÿ*âbÂßpü}°mJ‹k ;´h°3?Ôò¦†?±á ýóÉ: Þ ·("ÊxHi—ÿ”
+Ž± Å[¾€´ö§–uƒò0^ŸÚ*/DlX‚|a±!1 Þ&ø^sÊ´, `¥@&pŽœñvAù°O™‰ÊG>x+¤…$}•Ÿ5ïö·ó?ÀèoßÜr8©ßïÃÇÂÏ?çÀWû–ÿüãÂ-c;âÛ·\n)á•ðË[ôæç'eÓV­)ŒÊ#B$¤‰bÙ#´fÞÅoƒ¨(ºdêù³²E+ü–12Kú‘âU w\÷y€Ô Ð1d è°'ô×·Xñ÷DuçNœ¸ ãnˆXÚÑ^9!l`@sÓrn‹2æ+’'…-SÏÞZnàØ<ãÑÅ=ä×‹+“ë'Y û2UpøÂ%àŒ‚=†„ÌÉøI:ðhÀ¿eìY»eÚ¯¾ö,XÐE£æ8h¥%Ë
+Y~ƒêéŸ…¯ÂùØ:‹–7ñÄb•x?g)_çì$-žçxý|¡¿½ßþo\ÆÒáÑ¢gV‡$T„7Ñ-³'iu A‡$ŒbUÖˆ-Ežá‰•+‰uÃÍ~?ù"zï‡¾
+~þóÏÑe?—{óù×øoô#zkù¹—£[8oD r	\¡¯=É”,á ‘#ˆÙí$C	·]]8~?‚ñŒø¨ŽÎp$µ§=‚Ÿ¾ŠZÂà2Gï%<z i˜;ÐLŸ: 4¦zG-®¯|”GÈm:þå0H|9\æè½ÄË‡4ÊéÄ™±§âË1S¸w±{¨!Ž À\æp«æ7©y©qqŠ|‡ >
+­ˆ³
+	HÂø¢åÆ2¢
+8ŽRàëcdØ‡yýíÇ2Äµ>ÂP ø¥C
+!ïƒùææ±xÒWv§¾‘_˜ZGÑwzÌ…Û=nÄoÞ ™av¯ºD°Ä0F)lÑž•JFDú
+€Ý|Þ.>‚"íÍGd¢(Ó‰Ñ¬BY±åò¦œÿ£ðƒ9ú«’ùj!·,fÜ.Ë'žÀí?Ú”Ã®Õdà{™ŽÄL„(œÇ>‡eœô žkT¼0¬áÀ„=ÑæûÒQGâäYŽšÔ¸i…ØŠ:ÞPQ|Þ-šˆÉQœÆ}a„hïÑ+s[ŒKþ×Ó c2°u3Ÿ€¾7Ÿ±¢KF@ú&XêgÞ#D^ïØì‰iOýçÝ›Kªò×úç¿/º±
+%ò˜œ ó¼Y,UÑ‹è¹¿§_DÅ)u ¯×z	§8*ÉèfŽÝ|ŠKÊ$êˆã•©H¹)âD¶Øü!]3ôRf·ü®‡? µŒ…¥åRÒ7ý¢‹ ·™?™NF˜:²¥,|û&þà†»±Îz)=ß™Ì;ùü>5‘Â›Ðã]t@ø‰‹¾\ïó^´9°ÔžègÈ<÷ñ+âùZa)åSSq»‡Ö…Ï["NŠ
+ÄßµÖþhþ‰‚_ßFHî¼îËÆ;î¦ò—bZ¨·HE	d8JÄîÇÜÿ|€Mª';*EéPš9SKƒüúŽjŽð(EOØô~±Ãì}ù‹Ú×H¼76*t_C#<dÅ{xPå8Ÿ·fFÀ¤šóŸ“Í•´ÆZ²´ïÇ±q›óúâ7¦ {[ ¡
+ËÏÅ°ãRŒ»-¨$ä‹6¿à*,†
+G4&j›˜KjxIK±¸µ‘$¹Ž¢G&Î‰ˆn¬Ž
+)Ì…õ<d¬—Ôï¯Œ-¼üMŒã¨ïÒÁJPPrf†’¸dá˜Ž»}Ì:'Š‹NUvKéþ•v`¤Ë§#üÎÇ{Ó	/ cñ÷Å1í|î;BõY®û´9®ÚVp5g* XsdÏXÀOˆtgóým
+ŒBÔâ¨hÄ2±.±-KÿÿÖŽù"ò’¬sø sp¹qÔo¸—œ+2Såhí«Ã\Åã7xƒÂ'ö:ý¢chÉk£bŽÂÝ% lÑ­oM8nêä…‰En‚i±Œ/ÊäÞìç‰[Pü>}ŽG¤òí…sI„ˆ=‚
+cÍ™Áœ@):	™I,|Šôž>()ÒOêe’ÜK´2^v:Q|;€˜Iš>¢ìp"ŸðKO	À„§Îþ	$ÖÉ•z×Qˆ²ƒ„Yäè$ô’3†@qY$ž y
+¬†øLñ K6µ#µör8›D¿Ø‚Òžd>vajÝÑÙB‘7+Á;h.¥
+À¡èoÂÞ†F}=f²ŽêSØÓúÛ´œÑ°œ)—Ë·æe¡ ´ÅÜ2VbX®ë€U$Œ*³™hZ‹%2µð¨1¸2öü§Á¿uåxŠgZsQæ';Qe–‚£Öh¯%ªÁÜìu…­(6”é÷²^Wð;.ÛÿPK œœW³   Ð_  PK   }u]œœW³   Ð_  !          ¶    index-professional-updated-3.htmlux         UT %nkPK      g   "!    
