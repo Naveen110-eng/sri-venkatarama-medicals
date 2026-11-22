@@ -187,7 +187,7 @@ footer{background:linear-gradient(130deg,#062f2c,#07584b 60%,#087f68);color:#fff
 <img class="payment-qr" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVgAAAFYAQAAAAA+F9ntAAACe0lEQVR4nO2by27rQAxDyQv//y/zLihpJl0VDtJK7hSG4zhnQQiCnlMK3/779330sIc97ANYSBkhBMVdAnzFzVwHvdPYCwgbEgJEiKIg2t6sX3voncZeAMqKBMUXr6XWry30TmOv7ZkQKdjIArHs/FENf4YVJUJiGZf8aQ0PY+2/4ab0pfp4deIOeqexF+DkBQAinN4oAhmMy4U76J3GcouwVSvIsVj15rMansxeCHuKgE1c/kopvFegeuidxkb9kCFB9lhCYBTDqBjcQe9ENpsKKULDMirB5dJd9E5incEcZNN3040p7r1dC70jWVcLUe/KUwgAHk6wiDZ6B7Gs0lfpynFlWFA1zR30TmRJJzP6KYyeA7RVwnXRO4nN+U4MHBQG9rhHMeuhX3TQO429kBGAUhZiquDwMuPpoHca694iHuOLK9/sLE79+w677S9QUVfhs+uFdPYX77CelUnyEsNLIqWFT3/xHitBUQP7RmaWy4R36t977AWPJN1W5BwiOo1skvVZDU9mV25b75RftdqNT2p4Oksi85ykrIb3FZzXRF30DmTleIAvxZpAkpnhGukdw8b5h72hiLWF9xdrJtFD70RWMXSI7mJF4igpFMmvi96BrKLarX0FWfMHnvh7n72Q2yCo5jlAbo09VdM5v3OX/bI/drDIQ1EUa6PxQQ1PZu2/ADx3YNUQykVRnZVqoXcau+ZntYTTqiHWRu7Mf++x+/lJ1viM3mcoqolY3nfQO43dz0+uQ6mqpaYj8OmP77K7fddJs2zlGAf9XFl00DuTrSF7nDxjpLWaQpz8dpPNfgKohpjbvwlUcXzy2z12r39/S8NhD3vYnux/3ShCliV2d/gAAAAASUVORK5CYII=" alt="Scan to pay using UPI">
 <div class="payment-copy"><span class="scan-label">SCAN & PAY</span><h3>Quick & Secure UPI Payment</h3><p>Open your preferred UPI app and scan this QR code. Check the displayed shop name and amount in your app before confirming payment.</p><p class="muted">Please show the payment confirmation to the store. Payments are not automatically verified by this website.</p></div>
 </div></div></section>
-\n<section id="products"><div class="container"><div class="section-head"><div><h2>Shop Products</h2><p>Find products published by the store admin.</p></div></div>
+<section id="products"><div class="container"><div class="section-head"><div><h2>Shop Products</h2><p>Find products published by the store admin.</p></div></div>
 <div class="filters"><input id="search" placeholder="Search medicines and products…" aria-label="Search products"><select id="category"><option value="">All categories</option><option>Company Medicines</option><option>Generic Medicines</option><option>Fancy Items</option><option>Surgical Items</option></select></div>
 <div id="productsList" class="products"><div class="empty">Loading products…</div></div>
 <div class="note">Medicine enquiries are subject to stock and applicable prescription requirements. Please confirm the product, strength, pack size and price with the pharmacist before purchase. This website does not process online payments.</div>
@@ -307,6 +307,23 @@ onSnapshot(settingsRef,snap=>{
  $("dealDescription").textContent=s.dealDescription||"Check today's featured deal.";
  $("dealPrice").textContent=s.dealPrice||"Contact store for today's deal price.";
 },err=>console.warn("Store offers unavailable:",err));
-\nonSnapshot(query(collection(db,"products"),orderBy("createdAt","desc")),snap=>{all=snap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>p.active!==false);render();},err=>{list.textContent="Product catalogue is temporarily unavailable. Please contact the shop.";console.error(err)});
+// Load the catalogue without orderBy so older products that do not have createdAt are not skipped.
+onSnapshot(collection(db,"products"),snap=>{
+ all=snap.docs
+  .map(d=>({id:d.id,...d.data()}))
+  .filter(p=>p.active!==false)
+  .sort((a,b)=>{
+   const time=v=>v?.toMillis?.() ?? (typeof v==="string" ? Date.parse(v) : 0) ?? 0;
+   return time(b.createdAt)-time(a.createdAt);
+  });
+ render();
+},err=>{
+ console.error("Firebase products listener failed:",err);
+ list.replaceChildren();
+ const message=document.createElement("div");
+ message.className="empty";
+ message.textContent="Products could not be loaded. Please check the Firebase connection and Firestore read permissions, or contact the shop on WhatsApp.";
+ list.append(message);
+});
 </script>
 </body></html>
